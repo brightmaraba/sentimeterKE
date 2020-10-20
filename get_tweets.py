@@ -56,8 +56,6 @@ def get_tweets_by_search_term(search_term):
             break
         else:
             pass
-    with open('tweets/{}.json'.format(search_term), 'w') as f:
-        json.dump(data, f)
     data_df = pd.DataFrame(data)
     data_df.to_csv(tweet_list_file_name, header=True)
     return data_df
