@@ -59,10 +59,11 @@ def get_tweets_by_search_term(search_term):
     with open('tweets/{}.json'.format(search_term), 'w') as f:
         json.dump(data, f)
     data_df = pd.DataFrame(data)
+    data_df.to_csv(tweet_list_file_name, header=True)
     return data_df
     print('Done!')
 
 
 if __name__ == "__main__":
-    get_tweets = get_tweets_by_username("girlfromtherift", 50)
-    get_tweets = get_tweets_by_search_term(search_term=["Ruto", "TangaTanga"])
+    # get_tweets = get_tweets_by_username("girlfromtherift", 50)
+    get_tweets = get_tweets_by_search_term(search_term=["Ruto"])
