@@ -11,5 +11,5 @@ def get_tweets_per_username():
 
 @app.get("/searchtermtweets")
 def get_tweets_by_searchterm():
-    get_tweets.get_tweets_by_search_term()
+    get_tweets.get_tweets_by_search_term(['RejectBBI'])
     return {"Message": "Done"}

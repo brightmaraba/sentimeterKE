@@ -4,7 +4,7 @@ import time
 from dotenv import load_dotenv
 import tweepy
 import pandas as pd
-import json
+
 
 load_dotenv()
 consumer_key = os.getenv('CONSUMER_KEY')
@@ -52,7 +52,7 @@ def get_tweets_by_search_term(search_term="RejectBBI"):
 
         data.append(tweet_details)
         counter += 1
-        if counter == 10000:
+        if counter == 500:
             break
         else:
             pass
@@ -64,5 +64,3 @@ def get_tweets_by_search_term(search_term="RejectBBI"):
     data_df.to_csv(tweet_list_file_name, header=True)
     return data_df
     print('Done!')
-
-
