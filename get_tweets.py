@@ -1,5 +1,4 @@
 import os
-from fastapi import FastAPI
 import time
 from dotenv import load_dotenv
 import tweepy
