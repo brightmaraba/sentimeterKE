@@ -8,7 +8,7 @@ app = FastAPI()
 @app.post("/usernametweets")
 def get_tweets_per_username():
     trigger_log_tweets()
-    get_tweets.get_tweets_by_username("SeroneiCheison", 1000)
+    get_tweets.get_tweets_by_username("RailaOdinga", 10000)
     return {"Message": "Done"}
 
 #@app.post("/searchtermtweets")

@@ -1,6 +1,6 @@
 import requests
 
-ngrok_url = 'http://3fc62d8e3d61.ngrok.io'
+ngrok_url = 'http://84a24b898f44.ngrok.io'
 
 tweets_endpoint = f'{ngrok_url}/usernametweets'
 #search_endpoint = f'{ngrok_url}/searchtermtweets'
