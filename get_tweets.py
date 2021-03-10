@@ -16,8 +16,8 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
 
-username = 'LibranTechie'
-count = 50
+username = 'SeroneiCheison'
+count = 100
 
 def get_tweets_by_username(username, count):
 
@@ -28,8 +28,8 @@ def get_tweets_by_username(username, count):
         this_file_path = os.path.abspath(__file__)
         BASE_DIR = os.path.dirname(this_file_path)
         ENTIRE_PROJECT_DIR = os.path.dirname(BASE_DIR)
-        tweets_file_name = os.path.join(BASE_DIR, "tweets", "tweets.csv")
-        tweets_df.to_csv(tweets_file_name, header=True)
+        tweets_file_name = os.path.join(BASE_DIR, "tweets", "tweets.xlsx")
+        tweets_df.to_excel(tweets_file_name, header=True, index=True, engine='xlsxwriter')
         return tweets_df
     except BaseException as e:
             print('failed on_status,',str(e))
@@ -59,7 +59,7 @@ def get_tweets_by_search_term(search_term="RejectBBI"):
     this_file_path = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(this_file_path)
     ENTIRE_PROJECT_DIR = os.path.dirname(BASE_DIR)
-    tweet_list_file_name = os.path.join(BASE_DIR, "tweets", "tweet_list.csv")
-    data_df.to_csv(tweet_list_file_name, header=True)
+    tweet_list_file_name = os.path.join(BASE_DIR, "tweets", "tweet_list.xlsx")
+    data_df.to_excel(tweet_list_file_name, header=True, index=True, engine='xlsxwriter')
     return data_df
     print('Done!')
