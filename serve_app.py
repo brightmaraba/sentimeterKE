@@ -11,8 +11,8 @@ def get_tweets_per_username():
     get_tweets.get_tweets_by_username("RailaOdinga", 10000)
     return {"Message": "Done"}
 
-#@app.post("/searchtermtweets")
-#def get_tweets_by_searchterm():
-#    trigger_log_search()
-#    get_tweets.get_tweets_by_search_term(['RejectBBI'])
-#    return {"Message": "Done"}
+@app.post("/searchtermtweets")
+def get_tweets_by_searchterm():
+    trigger_log_search()
+    get_tweets.get_tweets_by_search_term(['RejectBBI'])
+    return {"Message": "Done"}
