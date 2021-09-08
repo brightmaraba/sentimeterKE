@@ -35,11 +35,11 @@ def get_tweets_by_username(username, count):
             print('failed on_status,',str(e))
             time.sleep(3)
 
-def get_tweets_by_search_term(search_term=["RejectBBI"], count=100):
+def get_tweets_by_search_term(search_term=["RejectBBI"]):
     assert isinstance(search_term, list)
     data = []
     counter = 0
-    for tweet in tweepy.Cursor(api.search, q='\"{}\" -filter:retweets'.format(search_term), count=count, lang='en', tweet_mode='extended').items():
+    for tweet in tweepy.Cursor(api.search, q='\"{}\" -filter:retweets'.format(search_term), count=5000, lang='en', tweet_mode='extended').items():
         tweet_details = {}
         tweet_details['name'] = tweet.user.screen_name
         tweet_details['tweet'] = tweet.full_text
@@ -51,7 +51,7 @@ def get_tweets_by_search_term(search_term=["RejectBBI"], count=100):
 
         data.append(tweet_details)
         counter += 1
-        if counter == 500:
+        if counter == 5000:
             break
         else:
             pass
@@ -63,14 +63,3 @@ def get_tweets_by_search_term(search_term=["RejectBBI"], count=100):
     data_df.to_csv(tweet_list_file_name, header=True, index=True)
     return data_df
     print('Done!')
-
-
-# Run the function directly instead of calling it via FastAPI server
-
-# if __name__ == '__main__':
-#     print(consumer_key)
-#     print(consumer_secret)
-#     print(access_token)
-#     print(access_token_secret)
-#     get_tweets_by_username(username, count)
-#     get_tweets_by_search_term(search_term=["RejectBBI"], count=100)
