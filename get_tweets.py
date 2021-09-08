@@ -28,18 +28,18 @@ def get_tweets_by_username(username, count):
         this_file_path = os.path.abspath(__file__)
         BASE_DIR = os.path.dirname(this_file_path)
         ENTIRE_PROJECT_DIR = os.path.dirname(BASE_DIR)
-        tweets_file_name = os.path.join(BASE_DIR, "tweets", "tweets.xlsx")
-        tweets_df.to_excel(tweets_file_name, header=True, index=True, engine='xlsxwriter')
+        tweets_file_name = os.path.join(BASE_DIR, "tweets", "tweets.csv")
+        tweets_df.to_csv(tweets_file_name, header=True, index=True)
         return tweets_df
     except BaseException as e:
             print('failed on_status,',str(e))
             time.sleep(3)
 
-def get_tweets_by_search_term(search_term="RejectBBI"):
+def get_tweets_by_search_term(search_term=["RejectBBI"], count=100):
     assert isinstance(search_term, list)
     data = []
     counter = 0
-    for tweet in tweepy.Cursor(api.search, q='\"{}\" -filter:retweets'.format(search_term), count=100, lang='en', tweet_mode='extended').items():
+    for tweet in tweepy.Cursor(api.search, q='\"{}\" -filter:retweets'.format(search_term), count=count, lang='en', tweet_mode='extended').items():
         tweet_details = {}
         tweet_details['name'] = tweet.user.screen_name
         tweet_details['tweet'] = tweet.full_text
@@ -59,7 +59,18 @@ def get_tweets_by_search_term(search_term="RejectBBI"):
     this_file_path = os.path.abspath(__file__)
     BASE_DIR = os.path.dirname(this_file_path)
     ENTIRE_PROJECT_DIR = os.path.dirname(BASE_DIR)
-    tweet_list_file_name = os.path.join(BASE_DIR, "tweets", "tweet_list.xlsx")
-    data_df.to_excel(tweet_list_file_name, header=True, index=True, engine='xlsxwriter')
+    tweet_list_file_name = os.path.join(BASE_DIR, "tweets", "tweet_list.csv")
+    data_df.to_csv(tweet_list_file_name, header=True, index=True)
     return data_df
     print('Done!')
+
+
+# Run the function directly instead of calling it via FastAPI server
+
+# if __name__ == '__main__':
+#     print(consumer_key)
+#     print(consumer_secret)
+#     print(access_token)
+#     print(access_token_secret)
+#     get_tweets_by_username(username, count)
+#     get_tweets_by_search_term(search_term=["RejectBBI"], count=100)
