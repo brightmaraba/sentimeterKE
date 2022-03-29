@@ -39,7 +39,6 @@ def get_tweets_by_username(username, count):
 
 
 def get_tweets_by_search_term(search_term=["RejectBBI"]):
-    assert isinstance(search_term, list)
     data = []
     counter = 0
     for tweet in tweepy.Cursor(
@@ -50,14 +49,11 @@ def get_tweets_by_search_term(search_term=["RejectBBI"]):
         tweet_mode="extended",
     ).items():
         tweet_details = {}
-        tweet_details["name"] = tweet.user.screen_name
+        tweet_details["UserId"] = tweet.user.name
+        tweet_details["TweetId"] = tweet.id
         tweet_details["tweet"] = tweet.full_text
-        tweet_details["retweets"] = tweet.retweet_count
         tweet_details["location"] = tweet.user.location
         tweet_details["created"] = tweet.created_at.strftime("%d-%b-%Y")
-        tweet_details["followers"] = tweet.user.followers_count
-        tweet_details["is_user_verified"] = tweet.user.verified
-
         data.append(tweet_details)
         counter += 1
         if counter == 5000:
