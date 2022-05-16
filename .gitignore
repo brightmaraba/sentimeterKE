@@ -131,3 +131,5 @@ dmypy.json
 # Tweet Folder
 /tweets
 /logs
+Login.csv
+credentials.txt

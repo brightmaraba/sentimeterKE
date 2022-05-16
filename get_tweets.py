@@ -25,8 +25,10 @@ count = 100
 def get_tweets_by_username(username, count):
 
     try:
-        tweets = tweepy.Cursor(api.user_timeline, id=username).items(count)
-        tweets_list = [[tweet.created_at, tweet.id, tweet.text] for tweet in tweets]
+        tweets = api.user_timeline(
+            screen_name=username, count=count, language="en", tweet_mode="extended"
+        )
+        tweets_list = [[tweet.created_at, tweet.user_id, tweet.text] for tweet in tweets]
         tweets_df = pd.DataFrame(tweets_list, columns=["Datetime", "Tweet_ID", "Tweet"])
         this_file_path = os.path.abspath(__file__)
         BASE_DIR = os.path.dirname(this_file_path)
