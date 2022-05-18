@@ -63,8 +63,4 @@ def get_tweets_by_search_term(search_term=["RejectBBI"]):
         else:
             pass
     data_df = pd.DataFrame(data)
-    this_file_path = os.path.abspath(__file__)
-    BASE_DIR = os.path.dirname(this_file_path)
-    tweet_list_file_name = os.path.join(BASE_DIR, "tweets", "tweet_list.pkl")
-    data_df.to_pickle(tweet_list_file_name)
     return data_df
