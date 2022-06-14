@@ -1,1 +1,0 @@
-uvicorn --host 127.0.0.1 --port 5555 --workers 4 serve_app:app --reload
