@@ -75,3 +75,4 @@ def get_tweets_by_search_term(search_term=["RejectBBI"]):
             pass
     data_df = pd.DataFrame(data)
     return data_df
+

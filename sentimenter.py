@@ -1,28 +1,25 @@
 # import required packages
 import os
+import re
 import time
-from dotenv import load_dotenv
+import nltk
+import string
 import tweepy
-import pandas as pd
 import numpy as np
+import pandas as pd
 import altair as alt
 import streamlit as st
 from textblob import TextBlob
-import nltk
-import re
-import seaborn as sns
-import string
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
-from sklearn.feature_extraction.text import CountVectorizer
+from dotenv import load_dotenv
 import matplotlib.pyplot as plt
-
+from sklearn.feature_extraction.text import CountVectorizer
+from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 # Import NLTK lexicon
 nltk.download("vader_lexicon")
 nltk.download("stopwords")
 nltk.download("wordnet")
 nltk.download("omw-1.4")
-
 
 # Load API Keys from .env file and create API object
 load_dotenv()
@@ -37,9 +34,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
-username = "LibranTechie"
-count = 1
-# Retrieve Tweets by Username
+# Function to retrieve Tweets by Username
 def get_tweets_by_username(username, count=1):
 
     tweets = api.user_timeline(
@@ -61,7 +56,7 @@ def get_tweets_by_username(username, count=1):
     return tweets_df
 
 
-# Retrieve Tweets by Hashtag(s) / Keyword(s)
+# Function to retrieve Tweets by Hashtag(s) / Keyword(s)
 def get_tweets_by_search_term(keywords, num_tweets):
     data = []
     counter = 0
@@ -83,8 +78,8 @@ def get_tweets_by_search_term(keywords, num_tweets):
             break
         else:
             pass
-    data_df = pd.DataFrame(data)
-    return data_df
+    tweets_df = pd.DataFrame(data)
+    return tweets_df
 
 
 # Function to drop unnecessary columns and clean data
@@ -275,7 +270,7 @@ def plot_subjectivity_pie_chart(df):
 
 # Function to plot a scatter plot of the polarity and subjectivity of the tweets
 def plot_scatter(df):
-    fig = plt.figure(figsize=(30, 30))
+    fig = plt.figure(figsize=(30, 15))
     ax = fig.add_subplot(1, 1, 1)
     ax.scatter(
         df["polarity"],
@@ -288,11 +283,32 @@ def plot_scatter(df):
         alpha=0.5,
     )
     ax.set_title(
-        f"Scatter Plot of the Polarity and Subjectivity of the Tweets", fontsize=12
+        f"Scatter Plot of the Polarity and Subjectivity of the Tweets", fontsize=18
     )
-    ax.set_xlabel("Polarity", fontsize=12)
-    ax.set_ylabel("Subjectivity", fontsize=12)
+    ax.set_xlabel("Polarity", fontsize=18)
+    ax.set_ylabel("Subjectivity", fontsize=18)
     st.pyplot(fig)
+
+
+def plot_analysis(df):
+    clean_tweets_df = clean_data(tweets_df)
+    word_cloud(clean_tweets_df)
+    clean_tweets_df["subjectivity"] = clean_tweets_df["tweet"].apply(get_subjectivity)
+    clean_tweets_df["polarity"] = clean_tweets_df["tweet"].apply(get_polarity)
+    clean_tweets_df["analysis"] = clean_tweets_df["polarity"].apply(get_analysis)
+    clean_tweets_df["subjectivity_analysis"] = clean_tweets_df["subjectivity"].apply(
+        analyse_subjectivity
+    )
+    clean_tweets_df["analysis"].value_counts()
+    plot_histogram(clean_tweets_df)
+    plot_bar_chart(clean_tweets_df)
+    col1, col2 = st.columns(2)
+    with col1:
+        plot_polarity_pie_chart(clean_tweets_df)
+    with col2:
+        plot_subjectivity_pie_chart(clean_tweets_df)
+
+    plot_scatter(clean_tweets_df)
 
 
 # Sidebar to choose to retrieve either Tweets by Username or Hashtag/Phrase
@@ -300,12 +316,16 @@ st.sidebar.title("Select the type of data you want to retrieve")
 st.sidebar.subheader("Instructions:")
 st.sidebar.markdown(
     """
-    - Select the type of data you want to retrieve
+    - Select the type of Tweets to retrieve.
+    - For username, enter the username in the textbox without the @ symbol.
     - Enter hashtag(s) or phrase(s) to retrieve from Twitter
-    - Separate multiple hashtags or phrases with a comma
+    - Separate multiple hashtags or phrases with OR or AND inside Double Quotes.
+    - For example: "Python OR Machine Learning" or "Python AND Machine Learning"
     - Enter a number of tweets to retrieve (1 - 1000)
-    """
+    - Click on the button to retrieve the Tweets & Run Analysis
+        """
 )
+
 selection = st.sidebar.selectbox(
     "Select the type of data you want to retrieve", ["Username", "Hashtag/Phrase"]
 )
@@ -319,6 +339,7 @@ try:
         num_tweets = st.slider(
             "Select number of tweets to be retrieved:", 0, 1000, 100, 100
         )
+        st.write(username)
         if st.button("Retrieve Tweets"):
             tweets_df = get_tweets_by_username(username, num_tweets)
             st.markdown(
@@ -329,28 +350,7 @@ try:
             st.write(tweets_df.shape[0], "tweets retrieved")
             st.write(tweets_df.shape[1], "columns retrieved")
             st.table(tweets_df.head())
-            clean_tweets_df = clean_data(tweets_df)
-            word_cloud(clean_tweets_df)
-            clean_tweets_df["subjectivity"] = clean_tweets_df["tweet"].apply(
-                get_subjectivity
-            )
-            clean_tweets_df["polarity"] = clean_tweets_df["tweet"].apply(get_polarity)
-            clean_tweets_df["analysis"] = clean_tweets_df["polarity"].apply(
-                get_analysis
-            )
-            clean_tweets_df["subjectivity_analysis"] = clean_tweets_df[
-                "subjectivity"
-            ].apply(analyse_subjectivity)
-            clean_tweets_df["analysis"].value_counts()
-            plot_histogram(clean_tweets_df)
-            plot_bar_chart(clean_tweets_df)
-            col1, col2 = st.columns(2)
-            with col1:
-                plot_polarity_pie_chart(clean_tweets_df)
-            with col2:
-                plot_subjectivity_pie_chart(clean_tweets_df)
-
-            plot_scatter(clean_tweets_df)
+            plot_analysis(tweets_df)
 
     else:
         keywords = st.text_input(
@@ -360,8 +360,10 @@ try:
             "Select number of tweets to be retrieved:", 0, 1000, 100, 100
         )
         keywords = list(set(keywords.split(",")))
+        st.write(keywords)
         if st.button("Retrieve Tweets"):
             tweets_df = get_tweets_by_search_term(keywords, num_tweets)
+
             st.markdown(
                 """
         #### Summary of Tweets Retrieved
@@ -370,30 +372,9 @@ try:
             st.write(tweets_df.shape[0], "tweets retrieved")
             st.write(tweets_df.shape[1], "columns retrieved")
             st.table(tweets_df.head())
-            clean_tweets_df = clean_data(tweets_df)
-            word_cloud(clean_tweets_df)
-            clean_tweets_df["subjectivity"] = clean_tweets_df["tweet"].apply(
-                get_subjectivity
-            )
-            clean_tweets_df["polarity"] = clean_tweets_df["tweet"].apply(get_polarity)
-            clean_tweets_df["analysis"] = clean_tweets_df["polarity"].apply(
-                get_analysis
-            )
-            clean_tweets_df["subjectivity_analysis"] = clean_tweets_df[
-                "subjectivity"
-            ].apply(analyse_subjectivity)
-            # Compute the number of positive, negative and neutral tweets
-            clean_tweets_df["analysis"].value_counts()
-            plot_histogram(clean_tweets_df)
+            plot_analysis(tweets_df)
 except BaseException as e:
     st.error(
         f"Something went wrong: Make sure you have entered a valid username or hashtag/phrase without any special characters : {e}"
     )
     pass
-
-# Sentiment Analysis
-st.markdown(
-    """
-        #### Sentiment Analysis
-        """
-)
