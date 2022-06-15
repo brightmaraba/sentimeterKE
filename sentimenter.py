@@ -30,10 +30,10 @@ nltk.download("omw-1.4")
 # access_token = os.environ.get("ACCESS_TOKEN")
 # access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
 
-st.write(os.environ["consumer_key"] == st.secrets["CONSUMER_KEY"])
-st.write(os.environ["consumer_secret"] == st.secrets["CONSUMER_SECRET"])
-st.write(os.environ["access_token"] == st.secrets["ACCESS_TOKEN"])
-st.write(os.environ["access_token_secret"] == st.secrets["ACCESS_TOKEN_SECRET"])
+consumer_key = st.secrets["CONSUMER_KEY"]
+consumer_secret = st.secrets["CONSUMER_SECRET"]
+access_token = st.secrets["ACCESS_TOKEN"]
+access_token_secret = st.secrets["ACCESS_TOKEN_SECRET"]
 
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
