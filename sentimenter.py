@@ -11,6 +11,28 @@ import altair as alt
 import streamlit as st
 from textblob import TextBlob
 
+# Styling to hide menu
+hide_menu = """
+<style>
+    #MainMenu {
+        visibility: hidden;
+        }
+    footer {
+        visibility: visible;
+        }
+    footer:after {
+        content: "Copyright © 2022 - @LibranTechie | All rights reserved | Powered by Python | ";
+        display: block;
+        position: relative;
+        color: tomato;
+        align-items: center;
+    }
+</style>
+"""
+
+st.markdown(hide_menu, unsafe_allow_html=True)
+
+
 # from dotenv import load_dotenv
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
@@ -271,7 +293,7 @@ def plot_subjectivity_pie_chart(df):
 
 # Function to plot a scatter plot of the polarity and subjectivity of the tweets
 def plot_scatter(df):
-    fig = plt.figure(figsize=(30, 15))
+    fig = plt.figure(figsize=(30, 25))
     ax = fig.add_subplot(1, 1, 1)
     ax.scatter(
         df["polarity"],
@@ -305,7 +327,6 @@ def plot_analysis(df):
     plot_bar_chart(clean_tweets_df)
     plot_polarity_pie_chart(clean_tweets_df)
     plot_subjectivity_pie_chart(clean_tweets_df)
-
     plot_scatter(clean_tweets_df)
 
 
@@ -359,7 +380,7 @@ try:
         )
         keywords = list(set(keywords.split(",")))
         st.write(keywords)
-        if st.button("Retrieve Tweets"):
+        if st.button("Retrieve & Analyse Tweets"):
             tweets_df = get_tweets_by_search_term(keywords, num_tweets)
 
             st.markdown(
