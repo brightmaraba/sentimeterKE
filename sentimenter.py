@@ -10,7 +10,8 @@ import pandas as pd
 import altair as alt
 import streamlit as st
 from textblob import TextBlob
-from dotenv import load_dotenv
+
+# from dotenv import load_dotenv
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
@@ -22,12 +23,17 @@ nltk.download("wordnet")
 nltk.download("omw-1.4")
 
 # Load API Keys from .env file and create API object
-load_dotenv()
+# load_dotenv()
 
-consumer_key = os.environ.get("CONSUMER_KEY")
-consumer_secret = os.environ.get("CONSUMER_SECRET")
-access_token = os.environ.get("ACCESS_TOKEN")
-access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
+# consumer_key = os.environ.get("CONSUMER_KEY")
+# consumer_secret = os.environ.get("CONSUMER_SECRET")
+# access_token = os.environ.get("ACCESS_TOKEN")
+# access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
+
+st.write(os.environ["consumer_key"] == st.secrets["CONSUMER_KEY"])
+st.write(os.environ["consumer_secret"] == st.secrets["CONSUMER_SECRET"])
+st.write(os.environ["access_token"] == st.secrets["ACCESS_TOKEN"])
+st.write(os.environ["access_token_secret"] == st.secrets["ACCESS_TOKEN_SECRET"])
 
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
