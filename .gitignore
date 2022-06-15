@@ -130,3 +130,5 @@ dmypy.json
 
 # Secrets Folder
 .secrets/
+.secrets/secrets.toml
+.secrets/secrets.yml
