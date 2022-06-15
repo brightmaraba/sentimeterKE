@@ -30,11 +30,6 @@ nltk.download("omw-1.4")
 # access_token = os.environ.get("ACCESS_TOKEN")
 # access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
 
-os.environ["consumer_key"] == st.secrets["CONSUMER_KEY"]
-os.environ["consumer_secret"] = st.secrets["CONSUMER_SECRET"]
-os.environ["access_token"] = st.secrets["ACCESS_TOKEN"]
-os.environ["access_token_secret"] = st.secrets["ACCESS_TOKEN_SECRET"]
-
 consumer_key = st.secrets["CONSUMER_KEY"]
 consumer_secret = st.secrets["CONSUMER_SECRET"]
 access_token = st.secrets["ACCESS_TOKEN"]
