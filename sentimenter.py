@@ -22,13 +22,8 @@ nltk.download("stopwords")
 nltk.download("wordnet")
 nltk.download("omw-1.4")
 
-# Load API Keys from .env file and create API object
-# load_dotenv()
+# Load API Secrets and create API object
 
-# consumer_key = os.environ.get("CONSUMER_KEY")
-# consumer_secret = os.environ.get("CONSUMER_SECRET")
-# access_token = os.environ.get("ACCESS_TOKEN")
-# access_token_secret = os.environ.get("ACCESS_TOKEN_SECRET")
 
 consumer_key = st.secrets["CONSUMER_KEY"]
 consumer_secret = st.secrets["CONSUMER_SECRET"]
@@ -308,11 +303,8 @@ def plot_analysis(df):
     clean_tweets_df["analysis"].value_counts()
     plot_histogram(clean_tweets_df)
     plot_bar_chart(clean_tweets_df)
-    col1, col2 = st.columns(2)
-    with col1:
-        plot_polarity_pie_chart(clean_tweets_df)
-    with col2:
-        plot_subjectivity_pie_chart(clean_tweets_df)
+    plot_polarity_pie_chart(clean_tweets_df)
+    plot_subjectivity_pie_chart(clean_tweets_df)
 
     plot_scatter(clean_tweets_df)
 
