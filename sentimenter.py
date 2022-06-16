@@ -338,8 +338,8 @@ st.sidebar.markdown(
     - Select the type of Tweets to retrieve.
     - For username, enter the username in the textbox without the @ symbol.
     - Enter hashtag(s) or phrase(s) to retrieve from Twitter
-    - Separate multiple hashtags or phrases with OR or AND inside Double Quotes.
-    - For example: "Python OR Machine Learning" or "Python AND Machine Learning"
+    - Separate multiple hashtags or phrases by a comma.
+    - For example: "Python,Machine Learning".
     - Enter a number of tweets to retrieve (1 - 1000)
     - Click on the button to retrieve the Tweets & Run Analysis
         """
@@ -358,17 +358,27 @@ try:
         num_tweets = st.slider(
             "Select number of tweets to be retrieved:", 0, 1000, 100, 100
         )
-        st.write(username)
-        if st.button("Retrieve Tweets"):
+        st.markdown(
+            """
+        ##### You are retrieving Tweets from the username:
+        """
+        )
+        st.write(f"@{username}")
+        if st.button("Retrieve & Analyse Tweets"):
             tweets_df = get_tweets_by_username(username, num_tweets)
             st.markdown(
                 """
-        #### Summary of Tweets Retrieved
+        #### Summary and sample (5 most recent) of Tweets Retrieved
         """
             )
             st.write(tweets_df.shape[0], "tweets retrieved")
             st.write(tweets_df.shape[1], "columns retrieved")
             st.table(tweets_df.head())
+            st.markdown(
+                """
+        #### Analysis of Tweets Retrieved
+        """
+            )
             plot_analysis(tweets_df)
 
     else:
@@ -379,18 +389,28 @@ try:
             "Select number of tweets to be retrieved:", 0, 1000, 100, 100
         )
         keywords = list(set(keywords.split(",")))
+        st.markdown(
+            """
+        ##### You are retrieving Tweets that contain the following keywords:
+        """
+        )
         st.write(keywords)
         if st.button("Retrieve & Analyse Tweets"):
             tweets_df = get_tweets_by_search_term(keywords, num_tweets)
 
             st.markdown(
                 """
-        #### Summary of Tweets Retrieved
+        #### Summary and sample (5 most recent) of Tweets Retrieved
         """
             )
             st.write(tweets_df.shape[0], "tweets retrieved")
             st.write(tweets_df.shape[1], "columns retrieved")
             st.table(tweets_df.head())
+            st.markdown(
+                """
+        #### Analysis of Tweets Retrieved
+        """
+            )
             plot_analysis(tweets_df)
 except BaseException as e:
     st.error(

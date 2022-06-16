@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # Secrets Folder
-.secrets/
-.secrets/secrets.toml
-.secrets/secrets.yml
+.streamlit/
+.streamlit/secrets.toml
+.streamlit/secrets.yml
