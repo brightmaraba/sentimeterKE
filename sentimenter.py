@@ -10,6 +10,9 @@ import pandas as pd
 import altair as alt
 import streamlit as st
 from textblob import TextBlob
+import matplotlib.pyplot as plt
+from sklearn.feature_extraction.text import CountVectorizer
+from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 # Styling to hide menu
 hide_menu = """
@@ -34,9 +37,7 @@ st.markdown(hide_menu, unsafe_allow_html=True)
 
 
 # from dotenv import load_dotenv
-import matplotlib.pyplot as plt
-from sklearn.feature_extraction.text import CountVectorizer
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+
 
 # Import NLTK lexicon
 nltk.download("vader_lexicon")
@@ -45,8 +46,6 @@ nltk.download("wordnet")
 nltk.download("omw-1.4")
 
 # Load API Secrets and create API object
-
-
 consumer_key = st.secrets["CONSUMER_KEY"]
 consumer_secret = st.secrets["CONSUMER_SECRET"]
 access_token = st.secrets["ACCESS_TOKEN"]
@@ -57,9 +56,9 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
+
 # Function to retrieve Tweets by Username
 def get_tweets_by_username(username, count=1):
-
     tweets = api.user_timeline(
         screen_name=username, count=count, language="en", tweet_mode="extended"
     )
@@ -350,7 +349,7 @@ selection = st.sidebar.selectbox(
 )
 
 # Retrieve Tweets by Username / Hashtag(s) / Keyword(s)
-st.header("Tweet Sentiment Analysis")
+st.header("Tweeter Sentiment Analysis")
 
 try:
     if selection == "Username":
