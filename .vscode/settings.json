@@ -1,3 +1,7 @@
 {
-    "python.pythonPath": "/home/brightkoech/.local/share/virtualenvs/sentimeterKE-YDHvPva8/bin/python"
+  "python.pythonPath": "/home/brightkoech/.local/share/virtualenvs/sentimeterKE-YDHvPva8/bin/python",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none"
 }
