@@ -413,6 +413,6 @@ try:
             plot_analysis(tweets_df)
 except BaseException as e:
     st.error(
-        f"Something went wrong: Make sure you have entered a valid username or hashtag/phrase without any special characters : {e}"
+        f"Something went wrong: Make sure you have entered a valid username or hashtag/phrase without any special characters or check the error : {e}"
     )
     pass
